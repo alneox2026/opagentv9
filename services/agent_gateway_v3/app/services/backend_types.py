@@ -1,0 +1,37 @@
+"""Backend data structures for the agent gateway."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from datetime import datetime
+from typing import Any
+
+
+@dataclass(frozen=True)
+class SessionResult:
+    """Represents the resolved session and thread IDs for an agent interaction."""
+
+    session_id: str
+    thread_id: str
+    environment_type: str = "none"
+    container_size: str | None = None
+    environment_id: str | None = None
+    created_at: datetime | None = None
+    container_size_reported: bool = False
+
+
+@dataclass(frozen=True)
+class BufferedAgentResponse:
+    """Represents a non-streaming buffered response from an agent backend."""
+
+    reply_text: str
+    event_count: int = 0
+    usage: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class UpstreamStreamEvent:
+    """Represents a discrete streaming event received from an agent backend."""
+
+    event_name: str | None
+    payload: dict[str, Any]
